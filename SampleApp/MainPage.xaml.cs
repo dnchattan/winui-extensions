@@ -28,8 +28,8 @@ namespace SampleApp
 		{
 			string searchDir =
 				Path.Combine(
-					Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location))))))),
-					"SampleExtension\\bin\\Debug\\net6.0-windows10.0.19041.0"
+					Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+					@"..\..\..\..\..\..\SampleExtension\bin\Debug\net6.0-windows10.0.19041.0"
 					);
 			foreach (FileInfo fileInfo in new DirectoryInfo(searchDir).EnumerateFiles("*.SampleAppExtension.dll", new EnumerationOptions() { RecurseSubdirectories = true }))
 			{
