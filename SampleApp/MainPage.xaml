@@ -1,0 +1,34 @@
+<Page
+    x:Class="SampleApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SampleApp"
+    xmlns:ext="using:SampleApp.Extensibility"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+	Loaded="Page_Loaded">
+
+	<NavigationView x:Name="Nav" MenuItemsSource="{x:Bind MenuItems,Mode=OneWay}" SelectionChanged="NavigationView_SelectionChanged">
+		<NavigationView.MenuItemTemplate>
+			<DataTemplate x:DataType="local:ExtensionDescriptorModel">
+				<NavigationViewItem Content="{x:Bind DisplayName}">
+					<NavigationViewItem.Icon>
+						<SymbolIcon Symbol="{x:Bind Icon,Mode=OneWay}" />
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
+			</DataTemplate>
+		</NavigationView.MenuItemTemplate>
+
+		<StackPanel Margin="0,0,0,0">
+			<ItemsRepeater ItemsSource="{Binding SelectedItem.Instances,ElementName=Nav,Mode=OneWay}">
+				<ItemsRepeater.ItemTemplate>
+					<DataTemplate x:DataType="ext:ISampleExtension">
+						<ContentPresenter Content="{x:Bind Content}" />
+					</DataTemplate>
+				</ItemsRepeater.ItemTemplate>
+			</ItemsRepeater>
+		</StackPanel>
+	</NavigationView>
+</Page>
