@@ -7,7 +7,7 @@ This package provides the ability to load loose "extension" (or addin) assemblie
 Once you have loaded the extension assembly (such as via `Assembly.LoadFrom`), call the following extension method on your XamlApplication instance:
 
 ```cs
-using WinUI.Extensions;
+using CustomExtensions.WinUI;
 
 /* ... */
 
@@ -27,7 +27,7 @@ Any extension assembly must disable the generated `InitializeComponent()` method
 
 ```cs
 using Microsoft.UI.Xaml.Controls;
-using WinUI.Extensions;
+using CustomExtensions.WinUI;
 
 namespace SampleExtension.UI;
 

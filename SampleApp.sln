@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp", "SampleApp\Samp
 		{5A6C7D52-579D-477B-A80E-0CB2BEB54512} = {5A6C7D52-579D-477B-A80E-0CB2BEB54512}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinUI.Extensions", "WinUI.Extensions\WinUI.Extensions.csproj", "{7B887C61-A9A0-48FA-9ABF-B81EFD93B658}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomExtensions.WinUI", "CustomExtensions.WinUI\CustomExtensions.WinUI.csproj", "{7B887C61-A9A0-48FA-9ABF-B81EFD93B658}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleExtension", "SampleExtension\SampleExtension.csproj", "{5A6C7D52-579D-477B-A80E-0CB2BEB54512}"
 EndProject

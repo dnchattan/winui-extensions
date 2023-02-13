@@ -6,13 +6,15 @@
 		<RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
 		<UseWinUI>true</UseWinUI>
 		<AssemblyName>SampleExtension.SampleAppExtension</AssemblyName>
-		
+
 		<IsPackable>false</IsPackable>
 		<UseWinUI>true</UseWinUI>
 		<WindowsPackageType>None</WindowsPackageType>
 		<WindowsAppSdkBootstrapInitialize>false</WindowsAppSdkBootstrapInitialize>
 		<!-- Required to include nuget dependencies -->
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
+		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="SamplePage.xaml" />
@@ -27,7 +29,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\SampleApp.Extensibility\SampleApp.Extensibility.csproj" />
-		<ProjectReference Include="..\WinUI.Extensions\WinUI.Extensions.csproj" />
+		<ProjectReference Include="..\CustomExtensions.WinUI\CustomExtensions.WinUI.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -37,8 +39,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="UI\Greeter.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="UI\Greeter.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 </Project>

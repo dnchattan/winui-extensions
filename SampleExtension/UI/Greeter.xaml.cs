@@ -18,7 +18,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-using WinUI.Extensions;
+using CustomExtensions.WinUI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,21 +26,21 @@ using WinUI.Extensions;
 namespace SampleExtension.UI
 {
     public sealed partial class Greeter : UserControl
-	{
-		public Greeter()
-		{
-			// this.InitializeComponent();
-			this.LoadComponent(ref _contentLoaded);
-		}
+    {
+        public Greeter()
+        {
+            // this.InitializeComponent();
+            this.LoadComponent(ref _contentLoaded);
+        }
 
-		public GreetEntity TargetEntity
-		{
-			get { return (GreetEntity)GetValue(TargetEntityProperty); }
-			set { SetValue(TargetEntityProperty, value); }
-		}
+        public GreetEntity TargetEntity
+        {
+            get { return (GreetEntity)GetValue(TargetEntityProperty); }
+            set { SetValue(TargetEntityProperty, value); }
+        }
 
-		// Using a DependencyProperty as the backing store for TargetEntity.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty TargetEntityProperty =
-			DependencyProperty.Register(nameof(TargetEntity), typeof(GreetEntity), typeof(Greeter), new PropertyMetadata(GreetEntity.World));
-	}
+        // Using a DependencyProperty as the backing store for TargetEntity.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TargetEntityProperty =
+            DependencyProperty.Register(nameof(TargetEntity), typeof(GreetEntity), typeof(Greeter), new PropertyMetadata(GreetEntity.World));
+    }
 }

@@ -10,19 +10,19 @@ using SampleApp.Extensibility;
 
 namespace SampleExtension
 {
-	public class SampleExtension : ISampleExtension
-	{
-		private FrameworkElement? _content;
-		
-		public string Name => "Sample Extension";
+    public class SampleExtension : ISampleExtension
+    {
+        private FrameworkElement _content;
 
-		public FrameworkElement Content => EnsureContent();
+        public string Name => "Sample Extension";
 
-		private FrameworkElement EnsureContent()
-		{
-			if (_content != null)
-				return _content;
-			return _content = new UI.SamplePage();
-		}
-	}
+        public FrameworkElement Content => EnsureContent();
+
+        private FrameworkElement EnsureContent()
+        {
+            if (_content != null)
+                return _content;
+            return _content = new UI.SamplePage();
+        }
+    }
 }

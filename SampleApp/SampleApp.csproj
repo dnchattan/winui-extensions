@@ -11,9 +11,11 @@
 		<IsPackable>false</IsPackable>
 		<UseWinUI>true</UseWinUI>
 		<EnableMsixTooling>true</EnableMsixTooling>
-        <WindowsPackageType>None</WindowsPackageType>
-        <SelfContained>false</SelfContained>
-        <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+		<WindowsPackageType>None</WindowsPackageType>
+		<SelfContained>false</SelfContained>
+		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+		<!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
+		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="MainPage.xaml" />
@@ -45,14 +47,14 @@
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Include="..\.editorconfig" Link=".editorconfig" />
+		<None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\SampleApp.Extensibility\SampleApp.Extensibility.csproj" />
-	  <ProjectReference Include="..\WinUI.Extensions\WinUI.Extensions.csproj" />
+		<ProjectReference Include="..\SampleApp.Extensibility\SampleApp.Extensibility.csproj" />
+		<ProjectReference Include="..\CustomExtensions.WinUI\CustomExtensions.WinUI.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Content Remove="..\SampleExtension\bin\Debug\net6.0-windows10.0.19041.0\SampleExtension.SampleAppExtension.dll" />
+		<Content Remove="..\SampleExtension\bin\Debug\net6.0-windows10.0.19041.0\SampleExtension.SampleAppExtension.dll" />
 	</ItemGroup>
 	<ItemGroup>
 		<Page Update="MainPage.xaml">
