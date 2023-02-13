@@ -30,7 +30,7 @@ namespace SampleExtension.UI
 		public Greeter()
 		{
 			// this.InitializeComponent();
-			this.LoadComponent(ref _contentLoaded, "UI");
+			this.LoadComponent(ref _contentLoaded);
 		}
 
 		public GreetEntity TargetEntity

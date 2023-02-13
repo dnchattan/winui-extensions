@@ -16,7 +16,7 @@ namespace SampleExtension.UI
 		public SamplePage()
 		{
 			//this.InitializeComponent();
-			this.LoadComponent(ref _contentLoaded, "UI");
+			this.LoadComponent(ref _contentLoaded);
 		}
 
 		public GreetEntity InitialSelectedEntity
