@@ -1,0 +1,38 @@
+﻿<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<UserControl
+    x:Class="SampleExtension.UI.Greeter"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SampleExtension.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+	x:Name="Self"
+    mc:Ignorable="d">
+
+	<RichTextBlock FontSize="48">
+		<Paragraph>
+			<Run Text="Hello," />
+			<Run Text="{Binding TargetEntity,ElementName=Self,Mode=OneWay}"  />
+			<Run Text="! " />
+			<InlineUIContainer>
+				<controls:SwitchPresenter Value="{Binding TargetEntity,ElementName=Self,Mode=OneWay}" TargetType="local:GreetEntity">
+					<controls:Case Value="World">
+						<TextBlock Text="🌍"/>
+					</controls:Case>
+					<controls:Case Value="Galaxy">
+						<TextBlock Text="🌠"/>
+					</controls:Case>
+					<controls:Case Value="Universe">
+						<TextBlock Text="⚫"/>
+					</controls:Case>
+					<controls:Case Value="Multiverse">
+						<TextBlock Text="🤡"/>
+					</controls:Case>
+				</controls:SwitchPresenter>
+			</InlineUIContainer>
+		</Paragraph>
+	</RichTextBlock>
+</UserControl>

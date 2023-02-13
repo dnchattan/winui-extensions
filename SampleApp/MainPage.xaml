@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 	Loaded="Page_Loaded">
 
-	<NavigationView x:Name="Nav" MenuItemsSource="{x:Bind MenuItems,Mode=OneWay}" SelectionChanged="NavigationView_SelectionChanged">
+	<NavigationView x:Name="Nav" PaneDisplayMode="Left" MenuItemsSource="{x:Bind MenuItems,Mode=OneWay}" SelectionChanged="NavigationView_SelectionChanged">
 		<NavigationView.MenuItemTemplate>
 			<DataTemplate x:DataType="local:ExtensionDescriptorModel">
 				<NavigationViewItem Content="{x:Bind DisplayName}">
