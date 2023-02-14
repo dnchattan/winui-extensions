@@ -12,27 +12,39 @@
 	x:Name="Self"
     mc:Ignorable="d">
 
-	<RichTextBlock FontSize="48">
-		<Paragraph>
-			<Run Text="Hello," />
-			<Run Text="{Binding TargetEntity,ElementName=Self,Mode=OneWay}"  />
-			<Run Text="! " />
-			<InlineUIContainer>
-				<controls:SwitchPresenter Value="{Binding TargetEntity,ElementName=Self,Mode=OneWay}" TargetType="local:GreetEntity">
-					<controls:Case Value="World">
-						<TextBlock Text="🌍"/>
-					</controls:Case>
-					<controls:Case Value="Galaxy">
-						<TextBlock Text="🌠"/>
-					</controls:Case>
-					<controls:Case Value="Universe">
-						<TextBlock Text="⚫"/>
-					</controls:Case>
-					<controls:Case Value="Multiverse">
-						<TextBlock Text="🤡"/>
-					</controls:Case>
-				</controls:SwitchPresenter>
-			</InlineUIContainer>
-		</Paragraph>
-	</RichTextBlock>
+	<StackPanel>
+		<RichTextBlock FontSize="48">
+			<Paragraph>
+				<!--<Run Text="Hello," />-->
+				<Run x:Uid="Greeting" Text="" />
+				<Run Text="{Binding TargetEntity,ElementName=Self,Mode=OneWay}" />
+				<Run Text="! " />
+				<InlineUIContainer>
+					<controls:SwitchPresenter Value="{Binding TargetEntity,ElementName=Self,Mode=OneWay}" TargetType="local:GreetEntity">
+						<controls:Case Value="World">
+							<TextBlock Text="🌍"/>
+						</controls:Case>
+						<controls:Case Value="Galaxy">
+							<TextBlock Text="🌠"/>
+						</controls:Case>
+						<controls:Case Value="Universe">
+							<TextBlock Text="⚫"/>
+						</controls:Case>
+						<controls:Case Value="Multiverse">
+							<TextBlock Text="🤡"/>
+						</controls:Case>
+					</controls:SwitchPresenter>
+				</InlineUIContainer>
+			</Paragraph>
+		</RichTextBlock>
+		<StackPanel Orientation="Horizontal">
+			<Button Content="Load String" Click="Button_Click" />
+			<TextBox x:Name="ResourceMapName" PlaceholderForeground="SlateGray" PlaceholderText="Resource map name (e.g. &quot;Assembly.Name/resources&quot;)" Text="SampleExtension.SampleAppExtension/Resources" />
+			<TextBox x:Name="ResourceKey" PlaceholderForeground="SlateGray" PlaceholderText="Resource key" Text="Greeting.Text" />
+			<TextBlock>
+				<Run Text="Result:" FontWeight="Bold" />
+				<Run x:Name="ResourceValue" />
+			</TextBlock>
+		</StackPanel>
+	</StackPanel>
 </UserControl>

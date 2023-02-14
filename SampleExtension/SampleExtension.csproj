@@ -43,4 +43,8 @@
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <PRIResource Remove="Strings\en-US\Resources.resw" />
+	</ItemGroup>
 </Project>

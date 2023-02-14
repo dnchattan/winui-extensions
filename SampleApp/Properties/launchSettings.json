@@ -1,7 +1,12 @@
 {
   "profiles": {
     "SampleApp (Unpackaged)": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "environmentVariables": {
+        "ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO": "1",
+        "XAML_HOT_RELOAD_ACCURACY_OVER_PERF": "1"
+      },
+      "nativeDebugging": true
     }
   }
 }
