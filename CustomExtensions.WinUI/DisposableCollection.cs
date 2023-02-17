@@ -2,37 +2,50 @@
 
 public class DisposableCollection : HashSet<IDisposable>, IDisposable
 {
-    private bool IsDisposed;
+	private bool IsDisposed;
 
-    public DisposableCollection() : base() { }
-    public DisposableCollection(IEnumerable<IDisposable> collection) : base(collection) { }
+	public DisposableCollection() : base() { }
+	public DisposableCollection(IEnumerable<IDisposable> collection) : base(collection) { }
+	public DisposableCollection(params IDisposable[] items) : base(items) { }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!IsDisposed)
-        {
-            if (disposing)
-            {
-                Reset();
-            }
+	public bool AddRange(params IDisposable[] items) => AddRange((IEnumerable<IDisposable>)items);
 
-            IsDisposed = true;
-        }
-    }
+	public bool AddRange(IEnumerable<IDisposable> items)
+	{
+		bool result = false;
+		foreach (IDisposable item in items)
+		{
+			result |= Add(item);
+		}
+		return result;
+	}
 
-    public void Reset()
-    {
-        foreach (var item in this)
-        {
-            item.Dispose();
-        }
-        Clear();
-    }
+	protected virtual void Dispose(bool disposing)
+	{
+		if (!IsDisposed)
+		{
+			if (disposing)
+			{
+				Reset();
+			}
 
-    public void Dispose()
-    {
-        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
-    }
+			IsDisposed = true;
+		}
+	}
+
+	public void Reset()
+	{
+		foreach (var item in this)
+		{
+			item.Dispose();
+		}
+		Clear();
+	}
+
+	public void Dispose()
+	{
+		// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+		Dispose(disposing: true);
+		GC.SuppressFinalize(this);
+	}
 }

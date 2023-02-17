@@ -1,3 +1,5 @@
+using CustomExtensions.WinUI;
+
 using Microsoft.UI.Xaml;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -17,6 +19,7 @@ namespace SampleApp
 		public App()
 		{
 			this.InitializeComponent();
+			ApplicationExtensionHost.Initialize(this);
 		}
 
 		/// <summary>

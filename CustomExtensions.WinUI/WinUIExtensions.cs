@@ -14,8 +14,7 @@ public static class WinUIExtensions
 
         contentLoaded = true;
 
-        ExtensionAssembly extensionAsm = ExtensionAssembly.FromAssembly(component.GetType().Assembly);
-        Uri resourceLocator = extensionAsm.LocateResource(component, callerFilePath);
-        Application.LoadComponent(component, resourceLocator, ComponentResourceLocation.Nested);
+        Uri resourceLocator = ApplicationExtensionHost.Current.LocateResource(component, callerFilePath);
+		Application.LoadComponent(component, resourceLocator, ComponentResourceLocation.Nested);
     }
 }

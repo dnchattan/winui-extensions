@@ -17,58 +17,58 @@ using CustomExtensions.WinUI;
 
 namespace SampleApp
 {
-    public class ExtensionDescriptorModel : DependencyObject
-    {
-        public readonly string ExtensionPath;
-        private Assembly ExtensionAsm;
+	public class ExtensionDescriptorModel : DependencyObject
+	{
+		public readonly string ExtensionPath;
+		private Assembly ExtensionAsm;
 
-        public ExtensionDescriptorModel(string extensionPath)
-        {
-            ExtensionPath = extensionPath;
-            DisplayName = Path.GetFileNameWithoutExtension(extensionPath);
-        }
+		public ExtensionDescriptorModel(string extensionPath)
+		{
+			ExtensionPath = extensionPath;
+			DisplayName = Path.GetFileNameWithoutExtension(extensionPath);
+		}
 
-        public void Load()
-        {
-            if (IsLoaded)
-                return;
+		public async Task Load()
+		{
+			if (IsLoaded)
+				return;
 
-            ExtensionAsm = Assembly.LoadFrom(ExtensionPath);
-            Application.Current.LoadExtension(ExtensionAsm);
+			ExtensionAsm = Assembly.LoadFrom(ExtensionPath);
+			await ApplicationExtensionHost.Current.LoadExtensionAsync(ExtensionAsm);
 
-            // Instance
-            foreach (ISampleExtension instance in ExtensionAsm.GetExportedTypes()
-                .Where(type => type.IsAssignableTo(typeof(ISampleExtension)))
-                .Select(type => Activator.CreateInstance(type) as ISampleExtension))
-            {
-                Instances.Add(instance);
-            }
+			// Instance
+			foreach (ISampleExtension instance in ExtensionAsm.GetExportedTypes()
+				.Where(type => type.IsAssignableTo(typeof(ISampleExtension)))
+				.Select(type => Activator.CreateInstance(type) as ISampleExtension))
+			{
+				Instances.Add(instance);
+			}
 
-            Icon = Symbol.Page;
-            IsLoaded = true;
-        }
+			Icon = Symbol.Page;
+			IsLoaded = true;
+		}
 
-        public ObservableCollection<ISampleExtension> Instances { get; } = new();
+		public ObservableCollection<ISampleExtension> Instances { get; } = new();
 
-        public string DisplayName { get; }
+		public string DisplayName { get; }
 
-        public bool IsLoaded
-        {
-            get { return (bool)GetValue(IsLoadedProperty); }
-            set { SetValue(IsLoadedProperty, value); }
-        }
+		public bool IsLoaded
+		{
+			get { return (bool)GetValue(IsLoadedProperty); }
+			set { SetValue(IsLoadedProperty, value); }
+		}
 
-        public Symbol Icon
-        {
-            get { return (Symbol)GetValue(IconProperty); }
-            set { SetValue(IconProperty, value); }
-        }
+		public Symbol Icon
+		{
+			get { return (Symbol)GetValue(IconProperty); }
+			set { SetValue(IconProperty, value); }
+		}
 
-        public static readonly DependencyProperty IsLoadedProperty =
-            DependencyProperty.Register(nameof(IsLoaded), typeof(bool), typeof(ExtensionDescriptorModel), new PropertyMetadata(false));
+		public static readonly DependencyProperty IsLoadedProperty =
+			DependencyProperty.Register(nameof(IsLoaded), typeof(bool), typeof(ExtensionDescriptorModel), new PropertyMetadata(false));
 
-        public static readonly DependencyProperty IconProperty =
-            DependencyProperty.Register(nameof(Icon), typeof(Symbol), typeof(ExtensionDescriptorModel), new PropertyMetadata(Symbol.Page2));
+		public static readonly DependencyProperty IconProperty =
+			DependencyProperty.Register(nameof(Icon), typeof(Symbol), typeof(ExtensionDescriptorModel), new PropertyMetadata(Symbol.Page2));
 
-    }
+	}
 }

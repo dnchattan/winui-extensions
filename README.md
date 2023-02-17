@@ -2,6 +2,12 @@
 
 This package provides the ability to load loose "extension" (or addin) assemblies which may contain WinUI components and allow them to correctly render in the hosting process. Additionally, it provides some limited support for Hot Reload, depending on how your extensions are packaged.
 
+## Initializing the application for extension usage
+
+Before any other APIs are called, you must first initialize the host application by calling `ApplicationExtensionHost.Initialize()` with your host application instance.
+
+
+
 ## Loading an extension
 
 Once you have loaded the extension assembly (such as via `Assembly.LoadFrom`), call the following extension method on your XamlApplication instance:
