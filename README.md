@@ -7,25 +7,23 @@ This package provides the ability to load loose "extension" (or addin) assemblie
 Before any other APIs are called, you must first initialize the host application by calling `ApplicationExtensionHost.Initialize()` with your host application instance.
 
 
-
 ## Loading an extension
 
-Once you have loaded the extension assembly (such as via `Assembly.LoadFrom`), call the following extension method on your XamlApplication instance:
+Where you would normally loaded the extension assembly (such as via `Assembly.LoadFrom`), you should instead call the `ApplicationExtensionHost.Current.LoadExtensionAsync` method, which will return an `IExtensionAssembly` handle that can be used to unload the extension later.
 
 ```cs
 using CustomExtensions.WinUI;
 
 /* ... */
 
-void LoadMyExtension(Assembly asm)
+void LoadMyExtension(string assemblyLoadPath)
 {
-    // save off the handle so we can clean up our registration with the
-    // hosting process later
-    _extensionHandle = Application.Current.LoadExtension(ExtensionAsm);
+    // save off the handle so we can clean up our registration with the hosting process later if desired.
+    IExtensionAssembly asmHandle = await ApplicationExtensionHost.Current.LoadExtensionAsync(assemblyLoadPath);
 }
 ```
 
-This API will return an `IDisposable` that when disposed will remove your extension's Xaml type metadata registration from the hosting assembly, making it safe(er) to unload an assembly that was previously rendered (haven't actually tested this).
+The `IExtensionAssembly` interface also implements `IDisposable` to remove your extension's resources and Xaml type metadata registration from the hosting assembly. This will not unload the extension assembly, however.
 
 ## Extension UI Requirements
 
@@ -42,12 +40,34 @@ public sealed partial class SamplePage : Page
     public SamplePage()
     {
         // this.InitializeComponent();
-        // Should pass a path to the XAML file's directory
-        // relative to the project root.
-        this.LoadComponent(ref _contentLoaded, "UI");
+        // Will attempt infer the correct path to the Xaml file based on the `CallerFilePath` attribute.
+        this.LoadComponent(ref _contentLoaded);
     }
 }
 ```
+
+## Using resources in an extension
+
+The `x:Uid="Greeting"` pattern will not work for extensions to bind their resources to `FrameworkElements` in their own UI. They can however be accessed via the `ApplicationExtensionHost.GetResourceMapForAssembly` method, which will return a `ResourceMap` for the extension's resources:
+
+```xml
+<UserControl
+	x:Class="SampleExtension.UI.Greeter"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Loaded="Loaded">
+		<TextBlock x:Uid="Greeting" x:Name="Greeting" />
+</UserControl>
+```
+
+```cs
+private void Loaded(object sender, RoutedEventArgs e)
+{
+	ResourceMap resources = ApplicationExtensionHost.GetResourceMapForAssembly();
+	Greeting.Text = resources.GetValue("Greeting/Text").ValueAsString;
+}
+```
+
 
 ## Hot-reload
 
