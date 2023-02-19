@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package
+	xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+	xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+    IgnorableNamespaces="uap3">
+	<Identity Name="SampleExtension.SampleAppExtension"
+			  Version="1.0.0.0"
+			  Publisher="CN=dnchattan"/>
+	<Properties>
+		<DisplayName>SampleExtension</DisplayName>
+		<PublisherDisplayName>dnchattan</PublisherDisplayName>
+		<Logo>Assets\StoreLogo.png</Logo>
+	</Properties>
+	<Resources>
+		<Resource Language="en-us" />
+	</Resources>
+	<Dependencies>
+		<TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17763.0" MaxVersionTested="10.0.18362.0" />
+		<uap3:MainPackageDependency Name="8d47b7c1-5011-4ede-88fe-ad53fd88a157"/>
+	</Dependencies>
+</Package>

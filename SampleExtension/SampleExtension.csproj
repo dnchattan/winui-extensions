@@ -10,9 +10,8 @@
 		<IsPackable>false</IsPackable>
 		<UseWinUI>true</UseWinUI>
 		<WindowsPackageType>None</WindowsPackageType>
+		<EnableDynamicLoading>true</EnableDynamicLoading>
 		<WindowsAppSdkBootstrapInitialize>false</WindowsAppSdkBootstrapInitialize>
-		<!-- Required to include nuget dependencies -->
-		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<!-- https://github.com/dotnet/maui/issues/5886#issuecomment-1123106200 -->
 		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
 	</PropertyGroup>
@@ -23,13 +22,21 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230118.102" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230118.102">
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\SampleApp.Extensibility\SampleApp.Extensibility.csproj" />
-		<ProjectReference Include="..\CustomExtensions.WinUI\CustomExtensions.WinUI.csproj" />
+		<ProjectReference Include="..\SampleApp.Extensibility\SampleApp.Extensibility.csproj">
+			<Private>false</Private>
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</ProjectReference>
+		<ProjectReference Include="..\CustomExtensions.WinUI\CustomExtensions.WinUI.csproj">
+			<Private>false</Private>
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</ProjectReference>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -45,6 +52,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PRIResource Remove="Strings\en-US\Resources.resw" />
+		<PRIResource Remove="Strings\en-US\Resources.resw" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="AppxManifest.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Images\StoreLogo.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 </Project>

@@ -1,11 +1,12 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 
-namespace CustomExtensions.WinUI
+namespace CustomExtensions.WinUI;
+
+public interface IExtensionAssembly : IDisposable
 {
-	public interface IExtensionAssembly : IDisposable
-	{
-		Task LoadAsync();
-		bool TryEnableHotReload();
-		Uri LocateResource(object component, [CallerFilePath] string callerFilePath = "");
-	}
+	Assembly ForeignAssembly { get; }
+	Task LoadAsync();
+	bool TryEnableHotReload();
+	Uri LocateResource(object component, [CallerFilePath] string callerFilePath = "");
 }

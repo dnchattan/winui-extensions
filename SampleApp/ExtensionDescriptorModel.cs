@@ -1,26 +1,19 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-
-using SampleApp.Extensibility;
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
-
 using CustomExtensions.WinUI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using SampleApp.Extensibility;
 
 namespace SampleApp
 {
 	public class ExtensionDescriptorModel : DependencyObject
 	{
 		public readonly string ExtensionPath;
-		private Assembly ExtensionAsm;
+		private IExtensionAssembly ExtensionAsm;
 
 		public ExtensionDescriptorModel(string extensionPath)
 		{
@@ -33,11 +26,10 @@ namespace SampleApp
 			if (IsLoaded)
 				return;
 
-			ExtensionAsm = Assembly.LoadFrom(ExtensionPath);
-			await ApplicationExtensionHost.Current.LoadExtensionAsync(ExtensionAsm);
+			ExtensionAsm = await ApplicationExtensionHost.Current.LoadExtensionAsync(ExtensionPath);
 
 			// Instance
-			foreach (ISampleExtension instance in ExtensionAsm.GetExportedTypes()
+			foreach (ISampleExtension instance in ExtensionAsm.ForeignAssembly.GetExportedTypes()
 				.Where(type => type.IsAssignableTo(typeof(ISampleExtension)))
 				.Select(type => Activator.CreateInstance(type) as ISampleExtension))
 			{

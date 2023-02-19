@@ -1,20 +1,22 @@
-﻿using Microsoft.UI.Xaml;
-using WinRT;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls.Primitives;
-using System.Runtime.CompilerServices;
+using WinRT;
 
 namespace CustomExtensions.WinUI;
 
 public static class WinUIExtensions
 {
-    public static void LoadComponent<T>(this T component, ref bool contentLoaded, [CallerFilePath] string callerFilePath = "") where T : IWinRTObject
-    {
-        if (contentLoaded)
-            return;
+	public static void LoadComponent<T>(this T component, ref bool contentLoaded, [CallerFilePath] string callerFilePath = "") where T : IWinRTObject
+	{
+		if (contentLoaded)
+		{
+			return;
+		}
 
-        contentLoaded = true;
+		contentLoaded = true;
 
-        Uri resourceLocator = ApplicationExtensionHost.Current.LocateResource(component, callerFilePath);
+		Uri resourceLocator = ApplicationExtensionHost.Current.LocateResource(component, callerFilePath);
 		Application.LoadComponent(component, resourceLocator, ComponentResourceLocation.Nested);
-    }
+	}
 }

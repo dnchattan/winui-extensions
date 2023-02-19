@@ -6,18 +6,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SampleExtension.UI"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
 	x:Name="Self"
-    mc:Ignorable="d">
-
+	Loaded="Self_Loaded">
 	<StackPanel>
-		<TextBlock x:Uid="/Application/SampleExtension.SampleAppExtension/Resources/Greeting" />
 		<RichTextBlock FontSize="48">
 			<Paragraph>
-				<!--<Run Text="Hello," />-->
-				<Run x:Uid="/Application/SampleExtension.SampleAppExtension/Resources/Greeting" />
+				<Run x:Name="Greeting" x:Uid="SampleExtension.SampleAppExtension/Resources/Greeting" />
 				<Run Text="{Binding TargetEntity,ElementName=Self,Mode=OneWay}" />
 				<Run Text="! " />
 				<InlineUIContainer>

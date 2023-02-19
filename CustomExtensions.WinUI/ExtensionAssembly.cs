@@ -1,8 +1,6 @@
-﻿using Microsoft.UI.Xaml.Markup;
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
-
+using Microsoft.UI.Xaml.Markup;
 using ResourceManager = Windows.ApplicationModel.Resources.Core.ResourceManager;
 using StorageFile = Windows.Storage.StorageFile;
 
@@ -12,15 +10,22 @@ internal partial class ExtensionAssembly : IExtensionAssembly
 {
 	public Assembly ForeignAssembly { get; }
 
+	private readonly ExtensionLoadContext? ExtensionContext;
 	private readonly string ForeignAssemblyDir;
 	private readonly string ForeignAssemblyName;
 	private bool? IsHotReloadAvailable;
-	private DisposableCollection Disposables = new();
+	private readonly DisposableCollection Disposables = new();
 	private bool IsDisposed;
 
-	internal ExtensionAssembly(Assembly assembly)
+	internal ExtensionAssembly(string assemblyPath)
 	{
-		ForeignAssembly = assembly;
+		// TODO: For some reason WinUI gets very angry when loading via AssemblyLoadContext,
+		// even if using AssemblyLoadContext.Default which *should* have no difference than
+		// Assembly.LoadFrom(), but it does.
+		//
+		// ExtensionContext = new(assemblyPath);
+		// ForeignAssembly = ExtensionContext.LoadFromAssemblyPath(assemblyPath);
+		ForeignAssembly = Assembly.LoadFrom(assemblyPath);
 		ForeignAssemblyDir = Path.GetDirectoryName(ForeignAssembly.Location.AssertDefined()).AssertDefined();
 		ForeignAssemblyName = ForeignAssembly.GetName().Name.AssertDefined();
 	}
@@ -28,10 +33,12 @@ internal partial class ExtensionAssembly : IExtensionAssembly
 	public async Task LoadAsync()
 	{
 		if (IsDisposed)
+		{
 			throw new ObjectDisposedException(nameof(ExtensionAssembly));
+		}
 
-		RegisterXamlTypeMetadataProviders();
 		await LoadResources();
+		RegisterXamlTypeMetadataProviders();
 	}
 
 	private async Task LoadResources()
@@ -43,18 +50,22 @@ internal partial class ExtensionAssembly : IExtensionAssembly
 		}
 
 		if (!resourcePriFileInfo.Exists)
+		{
 			return;
+		}
 
 		StorageFile file = await StorageFile.GetFileFromPathAsync(resourcePriFileInfo.FullName);
-		ResourceManager.Current.LoadPriFiles(new [] { file });
+		ResourceManager.Current.LoadPriFiles(new[] { file });
 	}
 
 	private void RegisterXamlTypeMetadataProviders()
 	{
 		if (IsDisposed)
+		{
 			throw new ObjectDisposedException(nameof(ExtensionAssembly));
+		}
 
-		Disposables.AddRange(ForeignAssembly.ExportedTypes
+		_ = Disposables.AddRange(ForeignAssembly.ExportedTypes
 					.Where(type => type.IsAssignableTo(typeof(IXamlMetadataProvider)))
 					.Select(metadataType => (Activator.CreateInstance(metadataType) as IXamlMetadataProvider).AssertDefined())
 					.Select(ApplicationExtensionHost.Current.RegisterXamlTypeMetadataProvider));
@@ -63,7 +74,15 @@ internal partial class ExtensionAssembly : IExtensionAssembly
 	public bool TryEnableHotReload()
 	{
 		if (IsHotReloadAvailable.HasValue)
+		{
 			return IsHotReloadAvailable.Value;
+		}
+
+		if (!ApplicationExtensionHost.IsHotReloadEnabled)
+		{
+			IsHotReloadAvailable = false;
+			return false;
+		}
 
 		if (ForeignAssemblyDir == HostingProcessDir)
 		{
@@ -94,7 +113,7 @@ internal partial class ExtensionAssembly : IExtensionAssembly
 			}
 			Directory.Delete(debugTargetResDir, recursive: true);
 		}
-		Directory.CreateSymbolicLink(debugTargetResDir, assemblyResDir);
+		_ = Directory.CreateSymbolicLink(debugTargetResDir, assemblyResDir);
 		IsHotReloadAvailable = true;
 		return true;
 	}
@@ -106,6 +125,7 @@ internal partial class ExtensionAssembly : IExtensionAssembly
 			if (disposing)
 			{
 				Disposables?.Dispose();
+				ExtensionContext?.Unload();
 			}
 
 			IsDisposed = true;

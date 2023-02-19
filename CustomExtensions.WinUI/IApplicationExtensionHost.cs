@@ -1,16 +1,11 @@
-﻿using Microsoft.UI.Xaml.Markup;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.UI.Xaml.Markup;
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
+namespace CustomExtensions.WinUI;
 
-using WinRT;
-
-namespace CustomExtensions.WinUI
+public interface IApplicationExtensionHost
 {
-	public interface IApplicationExtensionHost
-	{
-		Task<IExtensionAssembly> LoadExtensionAsync(Assembly assembly);
-		IDisposable RegisterXamlTypeMetadataProvider(IXamlMetadataProvider provider);
-		Uri LocateResource(object component, [CallerFilePath] string callerFilePath = "");
-	}
+	Task<IExtensionAssembly> LoadExtensionAsync(string pathToAssembly);
+	IDisposable RegisterXamlTypeMetadataProvider(IXamlMetadataProvider provider);
+	Uri LocateResource(object component, [CallerFilePath] string callerFilePath = "");
 }
