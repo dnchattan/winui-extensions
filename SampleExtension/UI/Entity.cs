@@ -2,8 +2,8 @@
 
 public enum GreetEntity
 {
-    World,
-    Galaxy,
-    Universe,
-    Multiverse
+	World,
+	Galaxy,
+	Universe,
+	Multiverse
 }

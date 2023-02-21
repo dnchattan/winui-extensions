@@ -8,21 +8,20 @@ using SampleApp.Extensibility;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace SampleExtension
+namespace SampleExtension;
+
+public class SampleExtension : ISampleExtension
 {
-    public class SampleExtension : ISampleExtension
-    {
-        private FrameworkElement _content;
+	private FrameworkElement _content;
 
-        public string Name => "Sample Extension";
+	public string Name => "Sample Extension";
 
-        public FrameworkElement Content => EnsureContent();
+	public FrameworkElement Content => EnsureContent();
 
-        private FrameworkElement EnsureContent()
-        {
-            if (_content != null)
-                return _content;
-            return _content = new UI.SamplePage();
-        }
-    }
+	private FrameworkElement EnsureContent()
+	{
+		if (_content != null)
+			return _content;
+		return _content = new UI.SamplePage();
+	}
 }

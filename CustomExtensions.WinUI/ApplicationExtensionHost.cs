@@ -1,27 +1,42 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Markup;
-
-using System.Reflection;
+﻿using System.Reflection;
+using Microsoft.UI.Xaml;
+using Windows.ApplicationModel.Resources.Core;
 
 namespace CustomExtensions.WinUI;
 
-public partial class ApplicationExtensionHost<T> : IApplicationExtensionHost where T : Application
+public static partial class ApplicationExtensionHost
 {
-    private readonly T Application;
+	internal static bool IsHotReloadEnabled => Environment.GetEnvironmentVariable("ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO") == "1";
 
-    public ApplicationExtensionHost(T application)
-    {
-        Application = application;
-    }
+	private static IApplicationExtensionHost? _Current;
+	public static IApplicationExtensionHost Current => _Current ?? throw new InvalidOperationException("ApplicationExtensionHost is not initialized");
 
-    public IDisposable LoadExtension(Assembly assembly)
-    {
-        IDisposable[] metadataProviders = assembly.ExportedTypes
-            .Where(type => type.IsAssignableTo(typeof(IXamlMetadataProvider)))
-            .Select(metadataType => (Activator.CreateInstance(metadataType) as IXamlMetadataProvider).AssertDefined())
-            .Select(RegisterXamlTypeMetadataProvider)
-            .ToArray();
+	public static void Initialize<TApplication>(TApplication application) where TApplication : Application
+	{
+		if (_Current != null)
+		{
+			throw new InvalidOperationException("Cannot initialize application twice");
+		}
 
-        return new DisposableCollection(metadataProviders);
-    }
+		_Current = new ApplicationExtensionHostSingleton<TApplication>(application);
+	}
+
+	/// <summary>
+	/// Gets the default resource map for the specified assembly, or the caller's executing assembly if not provided.
+	/// </summary>
+	/// <param name="assembly">Assembly for which to load the default resource map</param>
+	/// <returns>A ResourceMap if one is found, otherwise null</returns>
+	public static ResourceMap? GetResourceMapForAssembly(Assembly? assembly = null)
+	{
+		assembly ??= Assembly.GetCallingAssembly();
+		string? assemblyName = assembly.GetName().Name;
+		if (assemblyName == null)
+		{
+			return null;
+		}
+
+		return !ResourceManager.Current.AllResourceMaps.TryGetValue(assemblyName, out ResourceMap? map)
+			? null
+			: map.GetSubtree($"{assemblyName}/Resources");
+	}
 }

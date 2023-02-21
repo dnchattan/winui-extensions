@@ -23,7 +23,7 @@
   </Dependencies>
 
   <Resources>
-    <Resource Language="x-generate"/>
+	  <Resource Language="en-US"/>
   </Resources>
 
   <Applications>
@@ -41,8 +41,4 @@
       </uap:VisualElements>
     </Application>
   </Applications>
-
-  <Capabilities>
-    <rescap:Capability Name="runFullTrust" />
-  </Capabilities>
 </Package>
