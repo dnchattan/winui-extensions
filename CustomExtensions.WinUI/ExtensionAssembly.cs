@@ -28,6 +28,10 @@ internal partial class ExtensionAssembly : IExtensionAssembly
 		ForeignAssembly = Assembly.LoadFrom(assemblyPath);
 		ForeignAssemblyDir = Path.GetDirectoryName(ForeignAssembly.Location.AssertDefined()).AssertDefined();
 		ForeignAssemblyName = ForeignAssembly.GetName().Name.AssertDefined();
+		var appxExtension = Path.Combine(ForeignAssemblyDir, ForeignAssemblyName);
+		var appxHost = Path.Combine(HostingProcessDir, ForeignAssemblyName);
+		if (Directory.Exists(appxExtension) && !Directory.Exists(appxHost))
+			Directory.CreateSymbolicLink(appxHost, appxExtension);
 	}
 
 	public async Task LoadAsync()
